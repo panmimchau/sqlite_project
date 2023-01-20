@@ -12,6 +12,27 @@ c.execute("""CREATE TABLE employees (
             pay integer
             )""")
 
+#simple functions
+def insert_emp(emp):
+    with conn: #no need for commit statement after this
+        c.execute("INSERT INTO employees VALUES (:first, :last, :pay)", {'first': emp.first, 'last': emp.last, 'pay': emp.pay})
+
+
+def get_emps_by_name(lastname):
+    c.execute("SELECT * FROM employees WHERE last=:last", {'last': lastname})
+    return c.fetchall()
+
+def update_pay(emp, pay):
+    with conn:
+        c.execute("""UPDATE employees SET pay = :pay
+                    WHERE first = :first AND last = ;last""",
+                    {'first': emp.first, 'last': emp.last, 'pay': emp.pay})
+
+def remove_emp(emp):
+    with conn:
+        c.execute("DELETE from employees WHRE first = :first AND last = :last",
+                    {'first': emp.first, 'last': emp.last})
+
 emp_1 = Employee('adam', 'malysz', 1000)
 emp_2 = Employee('patos', 'but', 1000)
 
